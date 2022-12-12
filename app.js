@@ -13,6 +13,7 @@ let db = null;
 
 app.use(express.json());
 
+//Data Base initialization
 const initializeDbAndServer = async () => {
   try {
     db = await open({
@@ -30,6 +31,7 @@ const initializeDbAndServer = async () => {
 
 initializeDbAndServer();
 
+//middleware function checkDataValidation for API 1
 const checkDataValidation = async (request, response, next) => {
   const { username, name, password, gender } = request.body;
   let condition = true;
@@ -54,6 +56,7 @@ const checkDataValidation = async (request, response, next) => {
   }
 };
 
+//API 1
 app.post("/register/", checkDataValidation, async (request, response) => {
   const { username, name, password, gender } = request.body;
   const passwordValue = await bcrypt.hash(password, 10);
@@ -68,6 +71,7 @@ app.post("/register/", checkDataValidation, async (request, response) => {
   response.send("User created successfully");
 });
 
+//API 2
 app.delete("/register/:id/", async (request, response) => {
   const { id } = request.params;
   console.log(id);
@@ -104,23 +108,34 @@ app.post("/login/", async (request, response) => {
 
 //Middleware function to check JWT
 const checkJwtToken = async (request, response, next) => {
+  let jwtToken;
+
   const auth = request.headers["authorization"];
-  const jwtToken = auth.split(" ")[1];
-  const tokenStatus = await jwt.verify(
-    jwtToken,
-    "THE_SECRET_CODE",
-    async (error, payload) => {
-      if (error) {
-        response.status(401);
-        response.send("Invalid JWT Token");
-      } else {
-        request.user = payload.username;
-        next();
+  if (auth !== undefined) {
+    jwtToken = auth.split(" ")[1];
+  }
+
+  if (jwtToken === undefined) {
+    response.status(401);
+    response.send("Invalid JWT Token");
+  } else {
+    const tokenStatus = await jwt.verify(
+      jwtToken,
+      "THE_SECRET_CODE",
+      async (error, payload) => {
+        if (error) {
+          response.status(401);
+          response.send("Invalid JWT Token");
+        } else {
+          request.user = payload.username;
+          next();
+        }
       }
-    }
-  );
+    );
+  }
 };
 
+//API 3
 app.get("/user/tweets/feed/", checkJwtToken, async (request, response) => {
   const user = request.user;
   console.log(user);
@@ -152,6 +167,7 @@ app.get("/user/tweets/feed/", checkJwtToken, async (request, response) => {
   response.send(results);
 });
 
+//API 4
 app.get("/user/following/", checkJwtToken, async (request, response) => {
   const user = request.user;
   const getAllUserNames = `
@@ -178,6 +194,7 @@ app.get("/user/following/", checkJwtToken, async (request, response) => {
   response.send(followingNames);
 });
 
+//API 5
 app.get("/user/followers/", checkJwtToken, async (request, response) => {
   const user = request.user;
   const fetchUserFollowers = `
@@ -204,6 +221,7 @@ app.get("/user/followers/", checkJwtToken, async (request, response) => {
   response.send(allFollowers);
 });
 
+//API 6
 app.get("/tweets/:tweetId/", checkJwtToken, async (request, response) => {
   const { tweetId } = request.params;
   const user = request.user;
@@ -251,6 +269,7 @@ app.get("/tweets/:tweetId/", checkJwtToken, async (request, response) => {
   }
 });
 
+//API 7
 app.get("/tweets/:tweetId/likes/", checkJwtToken, async (request, response) => {
   const { tweetId } = request.params;
   const user = request.user;
@@ -294,6 +313,7 @@ app.get("/tweets/:tweetId/likes/", checkJwtToken, async (request, response) => {
   }
 });
 
+//API 8
 app.get(
   "/tweets/:tweetId/replies/",
   checkJwtToken,
@@ -348,6 +368,7 @@ app.get(
   }
 );
 
+//API 9
 app.get("/user/tweets/", checkJwtToken, async (request, response) => {
   const user = request.user;
 
@@ -393,6 +414,7 @@ app.get("/user/tweets/", checkJwtToken, async (request, response) => {
   response.send(tweetDetails);
 });
 
+//API 10
 app.post("/user/tweets/", checkJwtToken, async (request, response) => {
   const { tweet } = request.body;
   const username = request.user;
@@ -429,6 +451,7 @@ app.post("/user/tweets/", checkJwtToken, async (request, response) => {
   response.send("Created a Tweet");
 });
 
+//API 11
 app.delete("/tweets/:tweetId/", checkJwtToken, async (request, response) => {
   const { tweetId } = request.params;
   const username = request.user;

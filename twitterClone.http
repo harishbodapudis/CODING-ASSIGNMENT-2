@@ -36,7 +36,7 @@ GET http://localhost:3000/tweets/1/likes/
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvZUJpZGVuIiwiaWF0IjoxNjcwNjY2Nzg3fQ.iP87MzY26VqLmktarveaysymKpnsrDG9uJvZWrwC7uo
 
 ###
-GET http://localhost:3000/tweets/1/replies/
+GET http://localhost:3000/tweets/8/replies/
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvZUJpZGVuIiwiaWF0IjoxNjcwNjY2Nzg3fQ.iP87MzY26VqLmktarveaysymKpnsrDG9uJvZWrwC7uo
 
 ###
@@ -50,10 +50,10 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvZ
 Content-Type: application/json
 
 {
-   "tweet": "The Mornings...Hyderabad"
+   "tweet": "The Mornings...Dubai"
 }
 ###
-DELETE http://localhost:3000/tweets/17/
+DELETE http://localhost:3000/tweets/14/
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvZUJpZGVuIiwiaWF0IjoxNjcwNjY2Nzg3fQ.iP87MzY26VqLmktarveaysymKpnsrDG9uJvZWrwC7uo
 
 ###
